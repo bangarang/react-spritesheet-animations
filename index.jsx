@@ -184,7 +184,6 @@ module.exports = React.createClass({
 				if ((getFilePathExtension(image) === "svg")){
 		      return (
 		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
-
 		          <span className="svg_icon_wrapper" style={ style } >
 		            <Isvg src={image} className="isvg">
 		              Here's some optional content for browsers that don't support XHR or inline
