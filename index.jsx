@@ -166,8 +166,8 @@ module.exports = React.createClass({
     }
 
     var style = {
-      transform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
-      WebkitTransform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
+      transform: "translateX(" + self.state.x + "px) translateY(" + self.state.y + "px)",
+      WebkitTransform: "translateX(" + self.state.x + "px) translateY(" + self.state.y + "px)",
       width: width,
       height: height,
       position: "absolute"
@@ -177,9 +177,6 @@ module.exports = React.createClass({
       height: self.props.frameH + "px",
       width: self.props.frameW + "px",
     };
-    if (self.props.duration && self.props.frames) {
-      self.animate();
-    }
 
 
 		if (image){

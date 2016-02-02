@@ -1,5 +1,5 @@
 var React = require('react');
-var Sprite = require('../components/sprite.jsx');
+var Sprite = require('../index.jsx');
 
 var util = require('util');
 
