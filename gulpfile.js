@@ -6,9 +6,11 @@ var rename = require("gulp-rename")
 
 gulp.task('build', function() {
   return gulp.src('index.jsx')
-    .pipe(jsx())
-    .pipe( rename(function (path) {
+    .pipe(jsx({
+      factory: 'React.createClass'
+    }))
+    .pipe(rename(function (path) {
       path.extname = ".js"
     }))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('.'));
 });

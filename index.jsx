@@ -184,42 +184,42 @@ module.exports = React.createClass({
 			if (hover){
 				if ((getFilePathExtension(image) === "svg")){
 		      return (
-		        React.createClass('span', {onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size}, [
-		          React.createClass('span', {className: "svg_icon_wrapper", style: style }, [
-		            Isvg({src: image, className: "isvg"}, [
-		              "Here's some optional content for browsers that don't support XHR or inline" + ' ' +
-		              "SVGs. You can use other React components here too. Here, I'll show you."
+		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
+		          <span className="svg_icon_wrapper" style={ style } >
+		            <Isvg src={image} className="isvg">
+		              Here's some optional content for browsers that don't support XHR or inline
+		              SVGs. You can use other React components here too. Here, I'll show you.
 
-		            ])
-		          ])
-		        ])
+		            </Isvg>
+		          </span>
+		        </span>
 		      )
 		    } else {
 		      return (
-		        React.createClass('span', {onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size}, [
-		          React.createClass('img', {src: image, width: width, height: height, style: style })
-		        ])
+		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
+		          <img src={image} width={width} height={ height } style={ style } />
+		        </span>
 		      )
 		    }
 			} else if (loop){
 				if ((getFilePathExtension(image) === "svg")){
 					return (
-						React.createClass('span', {onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size}, [
+						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} >
 
-							React.createClass('span', {className: "svg_icon_wrapper loop", style: style }, [
-								Isvg({src: image, className: "isvg"}, [
-									"Here's some optional content for browsers that don't support XHR or inline" + ' ' +
-									"SVGs. You can use other React components here too. Here, I'll show you."
+							<span className="svg_icon_wrapper loop" style={ style } >
+								<Isvg src={image} className="isvg">
+									Here's some optional content for browsers that don't support XHR or inline
+									SVGs. You can use other React components here too. Here, I'll show you.
 
-								])
-							])
-						])
+								</Isvg>
+							</span>
+						</span>
 					)
 				} else {
 					return (
-						React.createClass('span', {onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size}, [
-							React.createClass('img', {src: image, width: width, height: height, style: style })
-						])
+						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} >
+							<img src={image} width={width} height={ height } style={ style } />
+						</span>
 					)
 				}
 			} else {
@@ -234,23 +234,23 @@ module.exports = React.createClass({
 				  };
 
 		      return (
-						VisibilitySensor({onChange: onChange}, [
-			        React.createClass('span', {className: className, style: size}, [
-			          React.createClass('span', {className: "svg_icon_wrapper play", style: style }, [
-			            Isvg({src: image, className: "isvg"}, [
-			              "Here's some optional content for browsers that don't support XHR or inline" + ' ' +
-			              "SVGs. You can use other React components here too. Here, I'll show you."
+						<VisibilitySensor onChange={onChange}>
+			        <span className={className} style={size}>
+			          <span className="svg_icon_wrapper play" style={ style } >
+			            <Isvg src={image} className="isvg">
+			              Here's some optional content for browsers that don't support XHR or inline
+			              SVGs. You can use other React components here too. Here, I'll show you.
 
-			            ])
-			          ])
-			        ])
-						])
+			            </Isvg>
+			          </span>
+			        </span>
+						</VisibilitySensor>
 		      )
 		    } else {
 		      return (
-		        React.createClass('span', {className: className, style: size}, [
-		          React.createClass('img', {src: image, width: width, height: height, style: style })
-		        ])
+		        <span className={className} style={size} >
+		          <img src={image} width={width} height={ height } style={ style } />
+		        </span>
 		      )
 		    }
 			}
