@@ -178,10 +178,6 @@ module.exports = React.createClass({
 			width: self.props.frameW + "px"
 		};
 
-		if (self.props.duration && self.props.frames) {
-			self.animate();
-		}
-
 		if (image) {
 			if (hover) {
 				if (getFilePathExtension(image) === "svg") {
