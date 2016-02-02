@@ -55,20 +55,22 @@ module.exports = React.createClass({
 	},
 
 	componentDidMount: function componentDidMount() {
-		this.animate();
+		var self = this;
+		self.animate();
 	},
 
 	componentWillUnmount: function componentWillUnmount() {
-		// this.state.timer.stop();
 		this.setState({ animation: "stop" });
 	},
 
 	enter: function enter() {
-		this.setState({ animation: "forward" });
+		var self = this;
+		self.setState({ animation: "forward" });
 	},
 
 	out: function out() {
-		this.setState({ animation: "reverse" });
+		var self = this;
+		self.setState({ animation: "reverse" });
 	},
 
 	enterLoop: function enterLoop() {
@@ -92,10 +94,12 @@ module.exports = React.createClass({
 		var speed = 1000 * self.props.duration / self.props.frames;
 
 		self.setTimeout(function () {
+
+			self.requestAnimationFrame(self.animate);
+
 			if (self.state.animation == "start") {}
 
 			if (self.state.animation == "forward" && self.state.current_frame != self.props.frames - 1) {
-
 				var new_frame = self.state.current_frame + 1;
 				var col = new_frame % self.props.columns + 1;
 				var row = Math.floor(new_frame / self.props.columns) + 1;
