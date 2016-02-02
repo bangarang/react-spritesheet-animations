@@ -14,3 +14,7 @@ gulp.task('build', function() {
     }))
     .pipe(gulp.dest('.'));
 });
+
+// Default Task
+// gulp.task('default', ['lint', 'sass', 'scripts', 'watch']);
+gulp.task('default', ['build']);

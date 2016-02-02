@@ -11,9 +11,14 @@
     "spritesheet",
     "animation"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bangarang/react-spritesheet-animations"
+  },
   "author": "Alex Rock <me@alexjrock.com>",
-  "peerDependencies": {
+  "dependencies": {
     "react": "^0.14.3",
+    "react-dom": "^0.14.7",
     "react-inlinesvg": "^0.4.2",
     "react-visibility-sensor": "^3.0.0"
   },

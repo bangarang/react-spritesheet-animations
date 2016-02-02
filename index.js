@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
 var VisibilitySensor = require('react-visibility-sensor');
