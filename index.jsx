@@ -1,8 +1,8 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
 var VisibilitySensor = require('react-visibility-sensor');
+var TimerMixin = require('react-timer-mixin');
 
 function getFilePathExtension(path) {
 	var filename = path.split('\\').pop().split('/').pop();
@@ -10,6 +10,7 @@ function getFilePathExtension(path) {
 }
 
 module.exports = React.createClass({
+	mixins: [TimerMixin],
   getInitialState: function() {
     return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: {} }
   },
@@ -19,34 +20,34 @@ module.exports = React.createClass({
 	},
 
 	componentWillMount: function(){
-		var timer = {
-		    running: false,
-		    iv: 5000,
-		    timeout: false,
-		    cb : function(){},
-		    start : function(cb,iv){
-		        var elm = this;
-		        clearInterval(this.timeout);
-		        this.running = true;
-		        if(cb) this.cb = cb;
-		        if(iv) this.iv = iv;
-		        this.timeout = setTimeout(function(){elm.execute(elm)}, this.iv);
-		    },
-		    execute : function(e){
-		        if(!e.running) return false;
-		        e.cb();
-		        e.start();
-		    },
-		    stop : function(){
-		        this.running = false;
-		    },
-		    set_interval : function(iv){
-		        clearInterval(this.timeout);
-		        this.start(false, iv);
-		    }
-		};
-
-		this.setState({timer: timer})
+		// var timer = {
+		//     running: false,
+		//     iv: 5000,
+		//     timeout: false,
+		//     cb : function(){},
+		//     start : function(cb,iv){
+		//         var elm = this;
+		//         clearInterval(this.timeout);
+		//         this.running = true;
+		//         if(cb) this.cb = cb;
+		//         if(iv) this.iv = iv;
+		//         this.timeout = setTimeout(function(){elm.execute(elm)}, this.iv);
+		//     },
+		//     execute : function(e){
+		//         if(!e.running) return false;
+		//         e.cb();
+		//         e.start();
+		//     },
+		//     stop : function(){
+		//         this.running = false;
+		//     },
+		//     set_interval : function(iv){
+		//         clearInterval(this.timeout);
+		//         this.start(false, iv);
+		//     }
+		// };
+		//
+		// this.setState({timer: timer})
 	},
 
   componentDidMount: function(){
@@ -54,7 +55,7 @@ module.exports = React.createClass({
   },
 
   componentWillUnmount: function(){
-		this.state.timer.stop();
+		// this.state.timer.stop();
     this.setState({animation: "stop"});
   },
 
@@ -87,7 +88,7 @@ module.exports = React.createClass({
     var self = this;
     var speed = ( 1000 * self.props.duration ) / self.props.frames;
 
-    self.state.timer.start(function(){
+    self.setTimeout(function(){
       if ( self.state.animation == "start") {
       }
 
