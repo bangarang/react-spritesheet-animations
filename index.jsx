@@ -1,7 +1,7 @@
 var React = require('react');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
-var VisibilitySensor = require('react-visibility-sensor');
+var VisibilitySensor;
 
 function getFilePathExtension(path) {
 	var filename = path.split('\\').pop().split('/').pop();
@@ -44,11 +44,13 @@ module.exports = React.createClass({
 		        this.start(false, iv);
 		    }
 		};
+
 		this.setState({timer: timer})
 	},
 
   componentDidMount: function(){
     this.animate();
+		VisibilitySensor = require('react-visibility-sensor');
   },
 
   componentWillUnmount: function(){
