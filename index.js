@@ -61,6 +61,7 @@ module.exports = React.createClass({
 
 	componentWillUnmount: function componentWillUnmount() {
 		this.setState({ animation: "stop" });
+		this.cancelAnimationFrame();
 	},
 
 	enter: function enter() {
@@ -89,17 +90,46 @@ module.exports = React.createClass({
 		this.setState({ animation: "stoploop" });
 	},
 
-	animate: function animate() {
+	onVisible: function onVisible(isVisible) {
 		var self = this;
-		var speed = 1000 * self.props.duration / self.props.frames;
+		if (isVisible) {
+			self.play();
+		} else {
+			self.reset();
+		};
+	},
 
-		self.setTimeout(function () {
+	animation: function animation() {
+		var self = this;
 
-			self.requestAnimationFrame(self.animate);
+		self.requestAnimationFrame(self.animate);
 
-			if (self.state.animation == "start") {}
+		if (self.state.animation == "start") {}
 
-			if (self.state.animation == "forward" && self.state.current_frame != self.props.frames - 1) {
+		if (self.state.animation == "forward" && self.state.current_frame != self.props.frames - 1) {
+			var new_frame = self.state.current_frame + 1;
+			var col = new_frame % self.props.columns + 1;
+			var row = Math.floor(new_frame / self.props.columns) + 1;
+
+			var x = (col - 1) * self.props.frameW * -1;
+			var y = (row - 1) * self.props.frameH * -1;
+			self.setState({ current_frame: new_frame, x: x, y: y });
+		}
+
+		if (self.state.animation == "reverse" && self.state.current_frame != 0) {
+			var new_frame = self.state.current_frame - 1;
+			var col = new_frame % self.props.columns + 1;
+			var row = Math.floor(new_frame / self.props.columns) + 1;
+
+			var x = (col - 1) * self.props.frameW * -1;
+			var y = (row - 1) * self.props.frameH * -1;
+			self.setState({ current_frame: new_frame, x: x, y: y });
+		}
+
+		if (self.state.animation == "startloop") {
+			if (self.state.current_frame == self.props.frames - 1) {
+				self.setState({ current_frame: 0, x: 0, y: 0 });
+			} else {
 				var new_frame = self.state.current_frame + 1;
 				var col = new_frame % self.props.columns + 1;
 				var row = Math.floor(new_frame / self.props.columns) + 1;
@@ -108,9 +138,13 @@ module.exports = React.createClass({
 				var y = (row - 1) * self.props.frameH * -1;
 				self.setState({ current_frame: new_frame, x: x, y: y });
 			}
+		}
 
-			if (self.state.animation == "reverse" && self.state.current_frame != 0) {
-				var new_frame = self.state.current_frame - 1;
+		if (self.state.animation == "play") {
+			if (self.state.current_frame == self.props.frames - 1) {
+				self.setState({ animation: "start" });
+			} else {
+				var new_frame = self.state.current_frame + 1;
 				var col = new_frame % self.props.columns + 1;
 				var row = Math.floor(new_frame / self.props.columns) + 1;
 
@@ -118,39 +152,18 @@ module.exports = React.createClass({
 				var y = (row - 1) * self.props.frameH * -1;
 				self.setState({ current_frame: new_frame, x: x, y: y });
 			}
+		}
 
-			if (self.state.animation == "startloop") {
-				if (self.state.current_frame == self.props.frames - 1) {
-					self.setState({ current_frame: 0, x: 0, y: 0 });
-				} else {
-					var new_frame = self.state.current_frame + 1;
-					var col = new_frame % self.props.columns + 1;
-					var row = Math.floor(new_frame / self.props.columns) + 1;
+		if (self.state.animation == "stoploop") {
+			self.setState({ current_frame: 0, x: 0, y: 0 });
+		}
+	},
 
-					var x = (col - 1) * self.props.frameW * -1;
-					var y = (row - 1) * self.props.frameH * -1;
-					self.setState({ current_frame: new_frame, x: x, y: y });
-				}
-			}
+	animate: function animate() {
+		var self = this;
+		var speed = Math.floor(1000 * self.props.duration / self.props.frames);
 
-			if (self.state.animation == "play") {
-				if (self.state.current_frame == self.props.frames - 1) {
-					self.setState({ animation: "start" });
-				} else {
-					var new_frame = self.state.current_frame + 1;
-					var col = new_frame % self.props.columns + 1;
-					var row = Math.floor(new_frame / self.props.columns) + 1;
-
-					var x = (col - 1) * self.props.frameW * -1;
-					var y = (row - 1) * self.props.frameH * -1;
-					self.setState({ current_frame: new_frame, x: x, y: y });
-				}
-			}
-
-			if (self.state.animation == "stoploop") {
-				self.setState({ current_frame: 0, x: 0, y: 0 });
-			}
-		}, speed);
+		self.setTimeout(self.animation, speed);
 	},
 
 	render: function render() {
@@ -187,79 +200,59 @@ module.exports = React.createClass({
 				if (getFilePathExtension(image) === "svg") {
 					return React.createElement(
 						'span',
-						{ onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size },
+						{ onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size, key: image },
 						React.createElement(
 							'span',
-							{ className: 'svg_icon_wrapper', style: style },
-							React.createElement(
-								Isvg,
-								{ src: image, className: 'isvg' },
-								'Here\'s some optional content for browsers that don\'t support XHR or inline SVGs. You can use other React components here too. Here, I\'ll show you.'
-							)
+							{ className: 'svg_icon_wrapper', style: style, key: image },
+							React.createElement(Isvg, { src: image, className: 'isvg', key: image })
 						)
 					);
 				} else {
 					return React.createElement(
 						'span',
-						{ onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size },
-						React.createElement('img', { src: image, width: width, height: height, style: style })
+						{ onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size, key: image },
+						React.createElement('img', { src: image, width: width, height: height, style: style, key: image })
 					);
 				}
 			} else if (loop) {
 				if (getFilePathExtension(image) === "svg") {
 					return React.createElement(
 						'span',
-						{ onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size },
+						{ onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size, key: image },
 						React.createElement(
 							'span',
-							{ className: 'svg_icon_wrapper loop', style: style },
-							React.createElement(
-								Isvg,
-								{ src: image, className: 'isvg' },
-								'Here\'s some optional content for browsers that don\'t support XHR or inline SVGs. You can use other React components here too. Here, I\'ll show you.'
-							)
+							{ className: 'svg_icon_wrapper loop', style: style, key: image },
+							React.createElement(Isvg, { src: image, className: 'isvg', key: image })
 						)
 					);
 				} else {
 					return React.createElement(
 						'span',
-						{ onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size },
-						React.createElement('img', { src: image, width: width, height: height, style: style })
+						{ onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size, key: image },
+						React.createElement('img', { src: image, width: width, height: height, style: style, key: image })
 					);
 				}
 			} else {
 				if (getFilePathExtension(image) === "svg") {
 
-					var onChange = function onChange(isVisible) {
-						if (isVisible) {
-							self.play();
-						} else {
-							self.reset();
-						};
-					};
-
 					return React.createElement(
 						VisibilitySensor,
-						{ onChange: onChange },
+						{ onChange: self.onVisible, key: image },
 						React.createElement(
 							'span',
 							{ className: className, style: size },
 							React.createElement(
 								'span',
-								{ className: 'svg_icon_wrapper play', style: style },
-								React.createElement(
-									Isvg,
-									{ src: image, className: 'isvg' },
-									'Here\'s some optional content for browsers that don\'t support XHR or inline SVGs. You can use other React components here too. Here, I\'ll show you.'
-								)
+								{ className: 'svg_icon_wrapper play', style: style, key: image },
+								React.createElement(Isvg, { src: image, className: 'isvg', key: image })
 							)
 						)
 					);
 				} else {
 					return React.createElement(
 						'span',
-						{ className: className, style: size },
-						React.createElement('img', { src: image, width: width, height: height, style: style })
+						{ className: className, style: size, key: image },
+						React.createElement('img', { src: image, width: width, height: height, style: style, key: image })
 					);
 				}
 			}
