@@ -20,15 +20,16 @@ module.exports = React.createClass({
   mixins: [ SetIntervalMixin ],
   getInitialState: function(){
     return {
-      image: "/icons/blk-2.svg",
-      columns: 11,
-      frames: 22,
+      image: "fontenelle.svg",
+      columns: 13,
+      frames: 13,
       duration: .5,
-      frameW: 250,
-      frameH: 200,
+      frameW: 125,
+      frameH: 225,
       hover: false,
       loop: true
     };
+
   },
 
   handleColumns: function(event) {
@@ -121,8 +122,6 @@ module.exports = React.createClass({
             </p>
           </div>
         </div>
-
-        <Loader />
 
       </div>
     );
